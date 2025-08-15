@@ -6,7 +6,7 @@ const Navbar = () => {
       <div className="text-2xl font-bold">Med Portfolio</div>
       <div className="flex items-center gap-4">
         <UserButton />
-        <OrganizationSwitcher />
+        <OrganizationSwitcher afterSelectOrganizationUrl="/org/:slug" />
       </div>
     </nav>
   );
