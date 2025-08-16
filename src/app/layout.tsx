@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider, SignedIn, SignedOut, SignIn, SignOutButton } from "@clerk/nextjs";
+import Navbar from "@/components/layout/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,12 @@ export default function RootLayout({
               <SignIn routing="hash" />
             </div>
           </SignedOut>
-          <SignedIn>{children}</SignedIn>
-          <SignOutButton />
+          <SignedIn>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+            </div>
+          </SignedIn>
         </ClerkProvider>
       </body>
     </html>

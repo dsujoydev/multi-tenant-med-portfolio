@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useOrganizationList } from "@clerk/nextjs";
 
 const onboardingSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters"),
@@ -23,6 +24,7 @@ export default function OnboardingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { isLoaded, createOrganization } = useOrganizationList();
 
   const {
     register,
@@ -32,28 +34,25 @@ export default function OnboardingForm() {
     resolver: zodResolver(onboardingSchema),
   });
 
+  if (!isLoaded) return null;
+
   const onSubmit = async (data: OnboardingFormData) => {
     setIsSubmitting(true);
     setError(null);
 
     try {
-      const response = await fetch("/api/create-organization", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      const result = await createOrganization({
+        name: data.fullName,
+        slug: data.username,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create organization");
-      }
+      console.log("Organization created:", result);
 
       // Redirect to dashboard on success
       router.push("/dashboard");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      console.error("Error creating organization:", JSON.stringify(err, null, 2));
+      setError(err instanceof Error ? err.message : "Failed to create organization");
     } finally {
       setIsSubmitting(false);
     }
@@ -103,4 +102,3 @@ export default function OnboardingForm() {
     </form>
   );
 }
-

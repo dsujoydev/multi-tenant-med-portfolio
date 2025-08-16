@@ -1,12 +1,9 @@
-import { redirect } from "next/navigation";
-import { requireOnboarding } from "@/lib/auth";
-
 export default async function DashboardPage() {
-  const { redirect: redirectTo } = await requireOnboarding();
+  // const { redirect: redirectTo } = await requireOnboarding();
 
-  if (redirectTo) {
-    redirect(redirectTo);
-  }
+  // if (redirectTo) {
+  //   redirect(redirectTo);
+  // }
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -1,7 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import { db } from "@/db";
-import { organizations } from "@/db/schema";
-import { eq } from "drizzle-orm";
 
 export async function checkOnboardingStatus() {
   const { userId } = await auth();
@@ -10,10 +7,9 @@ export async function checkOnboardingStatus() {
     return { isAuthenticated: false, hasCompletedOnboarding: false };
   }
 
-  // Check if user has created an organization
-  const userOrganizations = await db.select().from(organizations).where(eq(organizations.createdBy, userId)).limit(1);
-
-  const hasCompletedOnboarding = userOrganizations.length > 0;
+  // For now, we'll assume onboarding is completed if user is authenticated
+  // This can be enhanced later with proper organization checking
+  const hasCompletedOnboarding = true;
 
   return {
     isAuthenticated: true,
