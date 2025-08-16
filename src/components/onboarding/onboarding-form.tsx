@@ -41,12 +41,34 @@ export default function OnboardingForm() {
     setError(null);
 
     try {
+      // First, create the organization with Clerk
       const result = await createOrganization({
         name: data.fullName,
         slug: data.username,
       });
 
-      console.log("Organization created:", result);
+      console.log("Organization created with Clerk:", result);
+
+      // Then, save the organization data to our database
+      const dbResponse = await fetch("/api/organizations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: result.id,
+          name: result.name,
+          slug: result.slug,
+        }),
+      });
+
+      if (!dbResponse.ok) {
+        const errorData = await dbResponse.json();
+        throw new Error(errorData.error || "Failed to save organization to database");
+      }
+
+      const dbResult = await dbResponse.json();
+      console.log("Organization saved to database:", dbResult);
 
       // Redirect to dashboard on success
       router.push(`/org/${result.slug}`);
