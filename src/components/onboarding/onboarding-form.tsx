@@ -49,7 +49,7 @@ export default function OnboardingForm() {
       console.log("Organization created:", result);
 
       // Redirect to dashboard on success
-      router.push("/dashboard");
+      router.push(`/org/${result.slug}`);
     } catch (err) {
       console.error("Error creating organization:", JSON.stringify(err, null, 2));
       setError(err instanceof Error ? err.message : "Failed to create organization");
