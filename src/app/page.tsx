@@ -1,14 +1,12 @@
+"use client";
+
 import { redirect } from "next/navigation";
-import { checkOnboardingStatus } from "@/lib/auth";
+import { useUser } from "@clerk/nextjs";
 
-export default async function Home() {
-  const { isAuthenticated, hasCompletedOnboarding } = await checkOnboardingStatus();
-
-  if (!isAuthenticated) {
-    redirect("/sign-in");
-  }
-
-  if (!hasCompletedOnboarding) {
+export default function Home() {
+  const { user } = useUser();
+  const organizationLength = user?.organizationMemberships.length;
+  if (organizationLength === 0) {
     redirect("/onboarding");
   }
 

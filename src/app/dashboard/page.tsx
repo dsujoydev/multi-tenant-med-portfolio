@@ -1,10 +1,10 @@
-export default async function DashboardPage() {
-  // const { redirect: redirectTo } = await requireOnboarding();
+"use client";
 
-  // if (redirectTo) {
-  //   redirect(redirectTo);
-  // }
+import { useUser } from "@clerk/nextjs";
 
+export default function DashboardPage() {
+  const { user } = useUser();
+  console.log(user, "user");
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
