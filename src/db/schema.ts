@@ -7,3 +7,11 @@ export const users = pgTable("users", {
   username: text("username").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
+
+export const organizations = pgTable("organizations", {
+  id: text("id").primaryKey(), // Clerk organization ID
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  createdBy: text("created_by").notNull(), // Clerk userId
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
