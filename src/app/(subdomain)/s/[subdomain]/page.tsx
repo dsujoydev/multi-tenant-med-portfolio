@@ -1,4 +1,5 @@
 import { clerkClient } from "@clerk/nextjs/server";
+import Home from "@/components/layout/home";
 
 interface Params {
   subdomain: "string";
@@ -17,6 +18,7 @@ export default async function SubdomainPage({ params }: { params: Promise<Params
     <div>
       <div>SubdomainPage {subdomain}</div>
       <div>Organization {org.name}</div>
+      <Home />
     </div>
   );
 }
